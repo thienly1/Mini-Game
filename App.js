@@ -40,7 +40,7 @@ export default function App() {
     setGuessRounds(numberOfRounds)
   }
   function startNewGameHandler () {
-    setUserNumber(null)
+    setUserNumber()
     setGuessRounds(0);
   }
 
