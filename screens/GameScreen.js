@@ -34,8 +34,8 @@ function GameScreen({ userNumber, onGameOver }) {
   function nextGuessHandler(direction) {
     //'lower' or 'greater'
     if (
-      (direction === "lower" && currentGuess < userNumber) ||
-      (direction === "greater" && currentGuess > userNumber)
+      (direction === "lower" && currentGuess > userNumber) ||
+      (direction === "greater" && currentGuess < userNumber)
     ) {
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry", style: "cancel" },
@@ -44,9 +44,9 @@ function GameScreen({ userNumber, onGameOver }) {
     }
 
     if (direction === "lower") {
-      maxBoundary = currentGuess;
+      minBoundary = currentGuess+1;
     } else {
-      minBoundary = currentGuess + 1;
+      maxBoundary = currentGuess;
     }
     console.log(minBoundary, maxBoundary);
     const newRndNumber = generateRandomBetween(
@@ -66,12 +66,12 @@ function GameScreen({ userNumber, onGameOver }) {
           <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText>
           <View style={styles.buttonsContainer}>
             <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
               <Ionicons name='md-remove' size={24} color='white'/>
             </PrimaryButton>
             </View>
             <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
               <Ionicons name="md-add" size={24} color="white" />
             </PrimaryButton>
             </View>
