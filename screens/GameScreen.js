@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Alert, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import NumberContainer from "../components/game/NumberContainer";
@@ -25,6 +32,8 @@ function GameScreen({ userNumber, onGameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === userNumber) {
@@ -66,43 +75,71 @@ function GameScreen({ userNumber, onGameOver }) {
 
   const guessRoundsListLength = guessRounds.length;
 
+  let content = (
+    <>
+      <NumberContainer>{currentGuess}</NumberContainer>
+      <Card>
+        <InstructionText style={styles.instructionText}>
+          Higher or Lower?
+        </InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="md-remove" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="md-add" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </Card>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="md-remove" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="md-add" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
-      <NumberContainer>{currentGuess}</NumberContainer>
-      <Text></Text>
-      <View>
-        <Card>
-          <InstructionText style={styles.instructionText}>
-            Higher or Lower?
-          </InstructionText>
-          <View style={styles.buttonsContainer}>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-                <Ionicons name="md-remove" size={24} color="white" />
-              </PrimaryButton>
-            </View>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-                <Ionicons name="md-add" size={24} color="white" />
-              </PrimaryButton>
-            </View>
-          </View>
-        </Card>
-      </View>      
-        {/* {guessRounds.map((guessRound) => (
+      {content}
+      {/* {guessRounds.map((guessRound) => (
           <Text key={guessRound}>{guessRound}</Text>
         ))} */}
-        <View style={styles.listContainer}>
-        <FlatList 
-        data={guessRounds} 
-        renderItem={(itemData)=><GuessLogItem roundNumber={guessRoundsListLength -itemData.index} guess={itemData.item}/>} 
-        //we dont need use itemData.item.index here bc the data is number already
-        keyExtractor={(item) =>item} 
+      <View style={styles.listContainer}>
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => (
+            <GuessLogItem
+              roundNumber={guessRoundsListLength - itemData.index}
+              guess={itemData.item}
+            />
+          )}
+          //we dont need use itemData.item.index here bc the data is number already
+          keyExtractor={(item) => item}
         />
-        </View>
-        </View>
-  )
+      </View>
+    </View>
+  );
 }
 
 export default GameScreen;
@@ -111,7 +148,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
-    alignItems: 'center'
+    alignItems: "center",
   },
   instructionText: {
     marginBottom: 12,
@@ -125,6 +162,10 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 16,
+  },
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center'
 
-  }
+  },
 });
