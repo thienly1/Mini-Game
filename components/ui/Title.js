@@ -17,5 +17,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
     padding: 12,
+    maxWidth: '80%', // in other screen, width should be smaller to fix the screen, n´but in the large screen, it is maximum is 80%
+    // % when we set like this always refer to the parent container that holds an element. In this case: 80% maxWdth refer to the container that holds the title (<View style={styles.screen}>)
   },
 });
