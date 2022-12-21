@@ -28,13 +28,13 @@ function GameScreen({ userNumber, onGameOver }) {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
 
   useEffect(() => {
-    minBoundary: 1;
-    maxBoundary: 100;
+    minBoundary = 1;
+    maxBoundary = 100;
   }, []);
 
   function nextGuessHandler(direction) {
@@ -93,7 +93,7 @@ function GameScreen({ userNumber, onGameOver }) {
         {/* {guessRounds.map((guessRound) => (
           <Text key={guessRound}>{guessRound}</Text>
         ))} */}
-        <View>
+        <View style={styles.listContainer}>
         <FlatList 
         data={guessRounds} 
         renderItem={(itemData)=><GuessLogItem roundNumber={guessRoundsListLength -itemData.index} guess={itemData.item}/>} 
@@ -121,4 +121,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
   },
+  listContainer: {
+    flex: 1,
+    padding: 16,
+
+  }
 });
