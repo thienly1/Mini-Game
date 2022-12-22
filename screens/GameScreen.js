@@ -164,8 +164,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   buttonsContainerWide: {
-    flexDirection: 'row',
-    alignItems: 'center'
-
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
